@@ -153,8 +153,8 @@ Feel free to use, fork, and modify for personal or commercial purposes.
 
 ## Author
 
-**Your Name**  
-GitHub: [@yourusername](https://github.com/yourusername)  
+**Garvit Joshi**  
+GitHub: [Garvitj48](https://github.com/Garvitj48)  
 Live Demo: [Coming soon](#)
 
 ---
