@@ -46,7 +46,7 @@ st.markdown(
 st.markdown(
     '<p class="subtitle">'
     "Enter your product details below and let the ML model recommend the "
-    "<strong>optimal price</strong> that maximises sales volume."
+    "<strong>optimal price</strong> that maximises predicted revenue."
     "</p>",
     unsafe_allow_html=True,
 )
@@ -129,20 +129,21 @@ if st.button("🔍 Find Optimal Price", type="primary", use_container_width=True
         st.metric(
             label="📦 Predicted Sales",
             value=f"{result['predicted_sales']} units",
-            delta=f"+{result['increase_percent']}%",
+            delta="At optimal price",
         )
     with m3:
         st.metric(
-            label="📈 Sales Increase",
-            value=f"+{result['increase_percent']}%",
-            delta="More revenue",
+            label="Predicted Revenue",
+            value=f"Rs. {result['predicted_revenue']:,.0f}",
+            delta=f"+{result['increase_percent']}%",
         )
 
     # Success message
     st.success(
         f"✅ **Recommendation:** Set your price to **₹{result['optimal_price']:.0f}** "
         f"to achieve an estimated **{result['predicted_sales']} units** sold — "
-        f"a **{result['increase_percent']}%** improvement over mid-range pricing."
+        f"about **Rs. {result['predicted_revenue']:,.0f}** revenue, "
+        f"a **{result['increase_percent']}%** revenue improvement over mid-range pricing."
     )
 
     # Explainability section
@@ -156,7 +157,7 @@ if st.button("🔍 Find Optimal Price", type="primary", use_container_width=True
 - 🎁 **Discount** ({discount}%) lowers the effective cost, boosting conversion rates.
 - 🌤️ **Season** (*{season}*) shifts typical demand patterns, influencing the optimal price point.
 
-The Random Forest model evaluated **{int((999 - 199) / 10 + 1)} candidate prices** (₹199 → ₹999, step ₹10) and selected the one with the highest predicted sales volume.
+The Random Forest model evaluated **{int((999 - 199) / 10 + 1)} candidate prices** and selected the one with the highest predicted revenue.
         """
     )
 

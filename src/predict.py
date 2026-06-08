@@ -106,32 +106,35 @@ def find_optimal_price(
     # Predict sales for all prices in one batch (fast)
     predicted_sales = model.predict(rows)
 
-    # Pick the price with the highest predicted sales
-    best_idx        = int(np.argmax(predicted_sales))
-    optimal_price   = float(candidate_prices[best_idx])
-    best_sales      = float(predicted_sales[best_idx])
+    # Pick the price with the highest predicted revenue.
+    predicted_revenue = candidate_prices * predicted_sales
+    best_idx          = int(np.argmax(predicted_revenue))
+    optimal_price     = float(candidate_prices[best_idx])
+    best_sales        = float(predicted_sales[best_idx])
+    best_revenue      = float(predicted_revenue[best_idx])
 
-    # Baseline: sales at mid-range price (≈ ₹599)
+    # Baseline: revenue at the mid-range price.
     mid_idx          = len(candidate_prices) // 2
-    baseline_sales   = float(predicted_sales[mid_idx])
+    baseline_revenue = float(predicted_revenue[mid_idx])
     increase_percent = round(
-        ((best_sales - baseline_sales) / max(baseline_sales, 1)) * 100, 1
+        ((best_revenue - baseline_revenue) / max(baseline_revenue, 1)) * 100, 1
     )
 
     return {
         "optimal_price":    optimal_price,
         "predicted_sales":  int(round(best_sales)),
+        "predicted_revenue": round(best_revenue, 2),
         "increase_percent": increase_percent,
     }
 
 
 # ── Quick smoke-test ──────────────────────────────────────────────────────────
 if __name__ == "__main__":
-    print("🔍 Running prediction smoke-test …\n")
+    print("Running prediction smoke-test...\n")
 
     test_cases = [
         {"demand": 150, "season": "summer", "competitor_price": 450, "discount": 10},
-        {"demand": 80,  "season": "winter", "competitor_price": 700, "discount": 20},
+        {"demand": 80, "season": "winter", "competitor_price": 700, "discount": 20},
         {"demand": 250, "season": "spring", "competitor_price": 300, "discount": 5},
     ]
 
@@ -140,12 +143,13 @@ if __name__ == "__main__":
             result = find_optimal_price(**tc)
             print(f"  Input  : {tc}")
             print(
-                f"  Output : Optimal ₹{result['optimal_price']:.0f}  |  "
+                f"  Output : Optimal Rs. {result['optimal_price']:.0f}  |  "
                 f"Sales {result['predicted_sales']} units  |  "
-                f"+{result['increase_percent']}% lift\n"
+                f"Revenue Rs. {result['predicted_revenue']:,.0f}  |  "
+                f"+{result['increase_percent']}% revenue lift\n"
             )
     except FileNotFoundError as e:
-        print(f"❌ {e}")
+        print(f"Error: {e}")
         sys.exit(1)
 
-    print(" Smoke-test passed!")
+    print("Smoke-test passed!")
