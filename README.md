@@ -51,8 +51,8 @@ The end-to-end pipeline covers synthetic dataset generation, model training, eva
 
 | Metric                     | Value       |
 |----------------------------|-------------|
-| R² Score                   | ≥ 0.85      |
-| MAE (Mean Absolute Error)  | ~25–30 units|
+| R² Score                   | 0.9864      |
+| MAE (Mean Absolute Error)  | 5.07        |
 | Average sales-lift         | ≥ 15 %      |
 
 ---
